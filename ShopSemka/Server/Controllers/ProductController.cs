@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ShopSemka.Server.Data;
+using ShopSemka.Server.Services.ProductService;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -13,18 +14,18 @@ namespace ShopSemka.Server.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly DataContext _context;
+        private readonly IProductService _productService;
         
-        public ProductController(DataContext context)
+        public ProductController(IProductService productService)
         {
-            _context = context;
+            _productService = productService;
         }
         
         [HttpGet]
-        public async Task<ActionResult<List<Product>>> GetProducts()
+        public async Task<ActionResult<ServiceResponse<List<Product>>>> GetProducts()
         {
-            var data = await _context.Products.ToListAsync();
-            return Ok(data);
+            var result = await _productService.GetProductsAsync();
+            return Ok(result);
         }
     }
 }

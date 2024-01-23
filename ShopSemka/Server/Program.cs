@@ -2,6 +2,7 @@
 global using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.ResponseCompression;
 using ShopSemka.Server.Data;
+using ShopSemka.Server.Services.ProductService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,9 @@ builder.Services.AddRazorPages();
 //ADD SWAGGER
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+//ADD SERVICE
+builder.Services.AddScoped<IProductService, ProductService>();
 
 var app = builder.Build();
 
