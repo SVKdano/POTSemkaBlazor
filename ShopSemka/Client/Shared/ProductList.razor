@@ -1,4 +1,5 @@
 ﻿@inject IProductService ProductService
+@implements IDisposable
 
 @if (ProductService.Products == null || ProductService.Products.Count == 0)
 {
@@ -12,7 +13,7 @@ else
         {
             <li class="media my-3">
                 <div class="media-img-wrapper mr-2" style="margin-right:2%">
-                    <a href="#">
+                    <a href="/product/@product.Id">
                         <img class="media-img"
                              src="@product.ImageURL"
                              alt="@product.Title"
@@ -20,7 +21,7 @@ else
                     </a>
                 </div>
                 <div class="media-body">
-                    <a href="#">
+                    <a href="/product/@product.Id">
                         <h4 class="mb-0">@product.Title</h4>
                     </a>
                     <p>@product.Description</p>
@@ -34,10 +35,18 @@ else
 }
 
 @code {
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        await ProductService.GetProducts();
+        //Ak je zmenený component rerenderujem ho
+        ProductService.ProductsChanged += StateHasChanged;
     }
+
+    public void Dispose()
+    {
+        //UNsubscribe
+        ProductService.ProductsChanged -= StateHasChanged;
+    }
+
 }
     
    

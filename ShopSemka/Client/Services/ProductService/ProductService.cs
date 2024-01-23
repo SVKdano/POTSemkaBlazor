@@ -8,15 +8,30 @@ public class ProductService : IProductService
     {
         _httpClient = httpClient;
     }
+
+    public event Action? ProductsChanged;
     public List<Product> Products { get; set; } = new List<Product>();
     
-    public async Task GetProducts()
+    public async Task GetProducts(string? categoryURL = null)
     {
-        var result =
+        var result = categoryURL == null ?
             await _httpClient.GetFromJsonAsync<ServiceResponse<List<Product>>>
-                ("api/Product");
+                ("api/Product")
+            : 
+            await _httpClient.GetFromJsonAsync<ServiceResponse<List<Product>>>
+                ($"api/Product/category/{categoryURL}");
         
         if (result != null && result.Data != null)
             Products = result.Data;
+        
+        //Checks if category is changed
+        ProductsChanged.Invoke();
+    }
+
+    public async Task<ServiceResponse<Product>> GetProduct(int productId)
+    {
+        var result =
+            await _httpClient.GetFromJsonAsync<ServiceResponse<Product>>($"api/Product/{productId}");
+        return result;
     }
 }

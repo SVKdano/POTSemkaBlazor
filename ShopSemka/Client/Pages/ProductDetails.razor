@@ -1,0 +1,50 @@
+@page "/product/{id:int}"
+@inject IProductService ProductService
+
+@if (_product == null)
+{
+    <span>@message</span>
+}
+else
+{
+    <div class="media" style="display: flex; flex-direction: row; margin-top: 4%;">
+        
+        <div class="media-img-wrapper mr-2" style="align-self: center; margin-right: 2%">
+            <img class="media-img" src="@_product.ImageURL" alt="@_product.Title" style="max-width: 400px; max-height: 400px;"/>
+        </div>
+        <div class="media-body" style="display: flex; flex-direction: column">
+            <h2 class="mb-0" style="text-align: center">
+                @_product.Title
+            </h2>
+            <p>@_product.Description</p>
+            <h4 class="price" style="margin-top: auto; text-align: right">
+                Cena: @_product.Price€
+            </h4>
+        </div>
+    </div>
+}
+
+@code {
+    private Product? _product = null;
+    private string message = String.Empty;
+    
+    [Parameter]
+    public int Id { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        message = "Načítanie detailov o produkte...";
+        
+        var result = await ProductService.GetProduct(Id);
+
+        if (!result.Success)
+        {
+            message = result.Message;
+        }
+        else
+        {
+            _product = result.Data;
+        }
+    }
+
+}

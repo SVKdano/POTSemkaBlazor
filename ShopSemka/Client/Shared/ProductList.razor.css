@@ -3,20 +3,17 @@
 }
 
 .media {
-    /*style ="display:flex; flex-direction:row"*/
     display: flex;
     flex-direction: row;
 }
 
 .media-body {
-    /*style ="display:flex; flex-direction:column; align-content:stretch"*/
     display: flex;
     flex-direction: column;
     align-content: stretch;
 }
 
 .price {
-    /*style ="margin-top:auto; margin-bottom:0"*/
     margin-top: auto;
     margin-bottom: 0;
 }
