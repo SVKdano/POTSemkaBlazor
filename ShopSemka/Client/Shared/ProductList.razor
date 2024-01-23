@@ -1,0 +1,49 @@
+﻿@inject HttpClient Http
+
+<h3 class="nadpis">Produkty</h3>
+<ul class="list-unstyled">
+    @foreach (var product in Products)
+        {
+            <li class="media my-3">
+                <div class="media-img-wrapper mr-2" style="margin-right:2%">
+                    <a href="#">
+                        <img class="media-img"
+                             src="@product.ImageURL"
+                             alt="@product.Title"
+                             style="width:250px"/>
+                    </a>
+                </div>
+                <div class="media-body">
+                    <a href="#">
+                        <h4 class="mb-0">@product.Title</h4>
+                    </a>
+                    <p>@product.Description</p>
+                    <h5 class="price">
+                        @product.Price €
+                    </h5>
+                </div>
+            </li>
+        }
+</ul>
+
+@code {
+    private static List<Product> Products = new List<Product>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var results = await Http.GetFromJsonAsync<List<Product>>("api/Product");
+            if (results != null)
+                Products = results;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex}");
+        }
+    }
+
+}
+    
+   
+
