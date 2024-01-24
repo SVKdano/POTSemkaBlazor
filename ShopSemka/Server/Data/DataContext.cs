@@ -1,3 +1,4 @@
+//INŠPIRACIA: https://www.youtube.com/watch?v=d8LObmppBdw
 namespace ShopSemka.Server.Data
 {
     public class DataContext : DbContext
