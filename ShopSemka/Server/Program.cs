@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.ResponseCompression;
 using ShopSemka.Server.Data;
 using ShopSemka.Server.Services.CategoryService;
 using ShopSemka.Server.Services.ProductService;
+using ShopSemka.Server.Services.UserService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,7 @@ builder.Services.AddSwaggerGen();
 //ADD SERVICE
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 

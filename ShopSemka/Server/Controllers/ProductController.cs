@@ -42,7 +42,6 @@ namespace ShopSemka.Server.Controllers
             var result = await _productService.GetProductsByCategoryAsync(categoryURL);
             return Ok(result);
         }
-
     }
 }
 

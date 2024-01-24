@@ -1,0 +1,79 @@
+@page "/admin"
+@using Microsoft.AspNetCore.Authorization
+@inject IProductService ProductService
+@attribute [Authorize]
+
+<h3>Administrácia</h3>
+<div style="display: flex; flex-direction: row; justify-content: space-evenly; margin-top: 2%">
+    <div class="loginForm" style="display: flex; flex-direction: column; align-items: center">
+        <h3>Pridaj nový produkt</h3>
+
+        <form @onsubmit="SubmitForm" style="text-align: center">
+            <div class="form-group" style="display: flex; flex-direction: row; margin-top: 2%" >
+                <label for="Title">Názov:</label>
+                <input id="Title" class="form-control" @bind="title" />
+            </div>
+            <div class="form-group" style="display: flex; flex-direction: row; margin-top: 2%">
+                <label for="Description">Popis:</label>
+                <input id="Description" class="form-control" @bind="description" />
+            </div>
+            <div class="form-group" style="display: flex; flex-direction: row; margin-top: 2%">
+                <label for="ImageURL">Obrázok URL:</label>
+                <input id="ImageURL" class="form-control" @bind="imageUrl" />
+            </div>
+            <div class="form-group" style="display: flex; flex-direction: row; margin-top: 2%">
+                <label for="selectOption">Select an option:</label>
+                <select id="selectOption" @onchange="OnOptionSelected">
+                    <option value="1">Kniha</option>
+                    <option value="2">E-kniha</option>
+                    <option value="3">Audiokniha</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary" style="margin-top: 2%">Login</button>
+        </form>
+    </div>
+ 
+<div style="display: flex; flex-direction: column">    
+    <h3>Pridaj nový produkt</h3>
+    <ul class="deleteList">
+        @foreach (var product in ProductService.Products)
+        {
+            <li  style="display: flex; flex-direction: row; justify-content: space-between; margin-top: 2%">
+                @product.Title
+                <button type="button" class="btn btn-danger" @onclick="(() => DeleteButtonOnClick(product.Id))">Vymaž</button>
+            </li>
+        }
+    </ul>
+</div>
+</div>
+
+@code {
+    private string title;
+    private string description;
+    private string imageUrl;
+    private string selectedOption { get; set; } = "1";
+    
+    private async Task SubmitForm()
+    {
+        Product product = new Product()
+        {
+            Title = title,
+            Description = description,
+            ImageURL = imageUrl,
+            CategoryId = Int32.Parse(selectedOption)
+        };
+
+        ProductService.PostProduct(product);
+    }
+    
+    private void OnOptionSelected(ChangeEventArgs e)
+    {
+        selectedOption = e.Value.ToString();
+    }
+
+    private void DeleteButtonOnClick(int id)
+    {
+        ProductService.DeleteProduct(id);
+    }
+
+}

@@ -9,4 +9,6 @@ public interface IProductService
     Task GetProducts(string categoryURL = null);
 
     Task<ServiceResponse<Product>> GetProduct(int productId);
+    Task PostProduct(Product product);
+    Task DeleteProduct(int id);
 }

@@ -7,6 +7,15 @@ namespace ShopSemka.Server.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<User>().HasData(
+                new User
+                {
+                    Id = 1,
+                    UserName = "Admin",
+                    Password = "admin123"
+                }
+            );
+            
             //SEEDING DATAS
             modelBuilder.Entity<Category>().HasData(
                 new Category
@@ -71,5 +80,6 @@ namespace ShopSemka.Server.Data
 
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }

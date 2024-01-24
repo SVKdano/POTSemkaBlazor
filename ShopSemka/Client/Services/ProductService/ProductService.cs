@@ -34,4 +34,14 @@ public class ProductService : IProductService
             await _httpClient.GetFromJsonAsync<ServiceResponse<Product>>($"api/Product/{productId}");
         return result;
     }
+
+    public async Task PostProduct(Product product)
+    {
+        var result = await _httpClient.PostAsJsonAsync("api/AddProduct", product);
+    }
+
+    public async Task DeleteProduct(int id)
+    {
+        var result = await _httpClient.DeleteAsync($"api/AddProduct/{id}");
+    }
 }
